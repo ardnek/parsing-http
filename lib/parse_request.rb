@@ -4,6 +4,7 @@ http_request = File.read('../data/get_request.txt').split("\n")
 #blueprint
 class Request
   attr_accessor :request
+
   def http_verb
     @request[0].split(" ")[0]
   end
@@ -19,18 +20,33 @@ class Request
   def query_params
     @param_hash = {}
     @param_array = @request[0].split(" ")[1].split("?")[1].split("&")
-    @first_pair = @param_array[0].split("=")
-    @param_hash[@first_pair[0].to_sym] = @first_pair[1]
-    @second_pair = @param_array[1].split("=")
-    @param_hash[@second_pair[0].to_sym] = @second_pair[1]
-    @param_hash
+    @param_hash[@param_array[0].split("=")[0].to_sym] = @param_array[0].split("=")[1]
+    @param_hash[@param_array[1].split("=")[0].to_sym] = @param_array[1].split("=")[1]
+    @param_hash[@param_array[2].split("=")[0].to_sym] = @param_array[2].split("=")[1]
   end
+
+  def query_string
+    @param_array = @request[0].split(" ")[1].split("?")[1].split("&")
+  end
+
+  def body
+    @body_hash = {}
+    @body_hash[@request[1].split(" ")[0].chop.to_sym] = @request[1].split(" ")[1]
+    @body_hash[@request[2].split(" ")[0].chop.to_sym] = @request[2].split(" ")[1]
+    @body_hash[@request[3].split(" ")[0].chop.to_sym] = @request[3].split(" ")[1]
+    @body_hash
+  end
+
+  def params
+    self.query_params.merge(self.body)
+  end
+
 end
 
 
 testclass = Request.new
 testclass.request = http_request
-p testclass.query_params
+p testclass.body
 
 
 

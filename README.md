@@ -20,9 +20,13 @@ The request object should have methods for:
 * path (string)
 * verb (string)
 * headers (returns a hash)
+
 * body (string)
+
 * querystring (string)
+
 * params (hash that includes: parsed query string, parsed body)
+
 * version
 
 The response object:
